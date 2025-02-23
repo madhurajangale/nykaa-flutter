@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:my_app/signup.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'signup.dart';
 import 'home.dart';
 
 void main() async {
@@ -15,7 +17,8 @@ void main() async {
           storageBucket: "nykaa-52e72.firebasestorage.app",
           messagingSenderId: "496215769818",
           appId: "1:496215769818:web:89dd01ac04a2e3553d1be3",
-          measurementId: "G-TRFYBXVMQZ"));
+          measurementId: "G-TRFYBXVMQZ",
+        ));
     print("✅ Firebase connected successfully!");
   } catch (e) {
     print("❌ Firebase initialization failed: $e");
@@ -38,7 +41,41 @@ class MyApp extends StatelessWidget {
   }
 }
 
-class LoginPage extends StatelessWidget {
+class LoginPage extends StatefulWidget {
+  @override
+  _LoginPageState createState() => _LoginPageState();
+}
+
+class _LoginPageState extends State<LoginPage> {
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
+  bool _isLoading = false;
+
+  void _login() async {
+    setState(() {
+      _isLoading = true;
+    });
+    try {
+      UserCredential userCredential = await _auth.signInWithEmailAndPassword(
+        email: _emailController.text.trim(),
+        password: _passwordController.text.trim(),
+      );
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => NykaaHomePage()),
+      );
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Text(e.toString()),
+        backgroundColor: Colors.red,
+      ));
+    }
+    setState(() {
+      _isLoading = false;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -54,7 +91,7 @@ class LoginPage extends StatelessWidget {
             ),
           ),
 
-          /// Skip Button
+          /// Signup Button
           Padding(
             padding: EdgeInsets.only(top: 40, right: 20),
             child: Align(
@@ -63,7 +100,7 @@ class LoginPage extends StatelessWidget {
                 onPressed: () {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => SignupPage()), // Navigate to Login screen
+                    MaterialPageRoute(builder: (context) => SignupPage()),
                   );
                 },
                 child: Text(
@@ -101,7 +138,7 @@ class LoginPage extends StatelessWidget {
 
                   SizedBox(height: 10),
 
-                  /// Login/Signup Prompt
+                  /// Login Prompt
                   Text(
                     "Login",
                     style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
@@ -117,39 +154,41 @@ class LoginPage extends StatelessWidget {
 
                   SizedBox(height: 20),
 
-                  /// Phone Number Input
+                  /// Email Input
                   TextField(
-                    keyboardType: TextInputType.phone,
+                    controller: _emailController,
+                    keyboardType: TextInputType.emailAddress,
                     decoration: InputDecoration(
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(10),
                       ),
-                      hintText: "Email",
-                      prefixIcon: Icon(Icons.phone),
+                      hintText: "Enter your email",
+                      prefixIcon: Icon(Icons.email),
                     ),
                   ),
 
+                  SizedBox(height: 10),
+
+                  /// Password Input
                   TextField(
-                    keyboardType: TextInputType.phone,
+                    controller: _passwordController,
+                    obscureText: true,
                     decoration: InputDecoration(
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(10),
                       ),
-                      hintText: "password",
-                      prefixIcon: Icon(Icons.phone),
+                      hintText: "Enter your password",
+                      prefixIcon: Icon(Icons.lock),
                     ),
                   ),
 
                   SizedBox(height: 20),
 
-                  /// OTP Button
-                  ElevatedButton(
-                    onPressed: () {
-                      Navigator.pushReplacement(
-                        context,
-                        MaterialPageRoute(builder: (context) => NykaaHomePage()),
-                      );
-                    },
+                  /// Login Button
+                  _isLoading
+                      ? CircularProgressIndicator()
+                      : ElevatedButton(
+                    onPressed: _login,
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Colors.pink,
                       minimumSize: Size(double.infinity, 50),

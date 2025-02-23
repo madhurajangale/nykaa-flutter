@@ -66,27 +66,10 @@ class IndianwearPage extends StatelessWidget {
                 crossAxisCount: 2,
                 mainAxisSpacing: 2,
                 crossAxisSpacing: 2,
-                childAspectRatio: 0.55,
+                childAspectRatio: 0.52,
               ),
             ),
           ),
-        ],
-      ),
-      bottomNavigationBar: BottomNavigationBar(
-        currentIndex: 0,
-        selectedItemColor: Colors.black,
-        unselectedItemColor: Colors.grey,
-        backgroundColor: Colors.white,
-        showUnselectedLabels: true,
-        type: BottomNavigationBarType.fixed,
-        onTap: (index) {
-          // Add navigation functionality if needed
-        },
-        items: [
-          BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
-          BottomNavigationBarItem(icon: Icon(Icons.category), label: 'Categories'),
-          BottomNavigationBarItem(icon: Icon(Icons.style), label: 'Stay Stylish'),
-          BottomNavigationBarItem(icon: Icon(Icons.account_circle), label: 'Account'),
         ],
       ),
     );
@@ -129,7 +112,6 @@ class ProductCard extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // Product Image with Heart Icon & Quick View Button
             Stack(
               children: [
                 ClipRRect(
@@ -137,11 +119,10 @@ class ProductCard extends StatelessWidget {
                   child: Image.asset(
                     image,
                     width: double.infinity,
-                    height: 220,  // Increased image height
+                    height: 220,
                     fit: BoxFit.cover,
                   ),
                 ),
-                // Heart Icon
                 Positioned(
                   top: 8,
                   right: 8,
@@ -158,49 +139,107 @@ class ProductCard extends StatelessWidget {
                     ),
                   ),
                 ),
-                // Quick View Button
                 Positioned(
                   bottom: 8,
                   left: 8,
-                  child: Container(
-                    padding: EdgeInsets.symmetric(vertical: 3, horizontal: 10),
-                    decoration: BoxDecoration(
-                      color: Colors.white.withOpacity(0.8),
-                      borderRadius: BorderRadius.circular(5),
-                    ),
-                    child: Text(
-                      "Quick View",
-                      style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold),
+                  child: GestureDetector(
+                    onTap: () {
+                      showQuickViewDialog(context, name, price, image, rating);
+                    },
+                    child: Container(
+                      padding: EdgeInsets.symmetric(vertical: 3, horizontal: 10),
+                      decoration: BoxDecoration(
+                        color: Colors.white.withOpacity(0.8),
+                        borderRadius: BorderRadius.circular(5),
+                      ),
+                      child: Text(
+                        "Quick View",
+                        style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold),
+                      ),
                     ),
                   ),
                 ),
               ],
             ),
-            // Wrap the Column with a Flexible widget to allow ListView
             Flexible(
               fit: FlexFit.tight,
-              child: ListView(
+              child: Padding(
                 padding: EdgeInsets.all(8),
-                shrinkWrap: true,  // Ensures ListView doesn't take more space than needed
-                physics: NeverScrollableScrollPhysics(),  // Disables scrolling inside the ListView
-                children: [
-                  Text(name, style: TextStyle(fontSize: 10, fontFamily: "Poppins")),
-                  SizedBox(height: 4),
-                  Row(
-                    children: [
-                      Icon(Icons.star, color: Colors.orange, size: 14),
-                      SizedBox(width: 4),
-                      Text(rating, style: TextStyle(fontSize: 10, color: Colors.black87)),
-                    ],
-                  ),
-                  SizedBox(height: 4),
-                  Text(price, style: TextStyle(fontSize: 11, color: Colors.black, fontWeight: FontWeight.bold, fontFamily: "Poppins")),
-                ],
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(name, style: TextStyle(fontSize: 10, fontFamily: "Poppins")),
+                    SizedBox(height: 4),
+                    Row(
+                      children: [
+                        Icon(Icons.star, color: Colors.orange, size: 14),
+                        SizedBox(width: 4),
+                        Text(rating, style: TextStyle(fontSize: 10, color: Colors.black87)),
+                      ],
+                    ),
+                    SizedBox(height: 4),
+                    Text(price, style: TextStyle(fontSize: 11, fontWeight: FontWeight.bold, fontFamily: "Poppins")),
+                  ],
+                ),
               ),
             ),
           ],
         ),
       ),
+    );
+  }
+
+  void showQuickViewDialog(BuildContext context, String name, String price, String image, String rating) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return Dialog(
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+          child: Container(
+            padding: EdgeInsets.all(7),
+            height: 440,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                ClipRRect(
+                  borderRadius: BorderRadius.circular(10),
+                  child: Image.asset(image, height: 310, width: double.infinity, fit: BoxFit.cover),
+                ),
+                SizedBox(height: 10),
+                Text(name, style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold)),
+                SizedBox(height: 5),
+                Row(
+                  children: [
+                    Icon(Icons.star, color: Colors.orange, size: 10),
+                    SizedBox(width: 3),
+                    Text(rating, style: TextStyle(fontSize: 10, color: Colors.black87)),
+                  ],
+                ),
+                SizedBox(height: 3),
+                Text(price, style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold)),
+                SizedBox(height: 10),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    ElevatedButton(
+                      onPressed: () {
+                        // Add to cart functionality
+                      },
+                      child: Text("Add to Cart"),
+                    ),
+                    ElevatedButton(
+                      onPressed: () {
+                        Navigator.pop(context); // Close dialog
+                      },
+                      child: Text("Close"),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ),
+        );
+      },
     );
   }
 }
