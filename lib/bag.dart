@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'cart.dart'; // <- Make sure this path is correct
 
 void main() {
   runApp(const MyApp());
@@ -79,28 +80,22 @@ class ShoppingBagScreen extends StatelessWidget {
 
           // Product List
           Expanded(
-            child: ListView(
-              children: [
-                ProductItem(
-                  imageUrl: "https://uspoloassn.in/cdn/shop/products/3_feb4870a-798f-4663-9eed-768c9e04a376_3024x.jpg?v=1686246326", // Replace with actual image URL
-                  brand: "U.S. POLO ASSN.",
-                  title: "Light Blue High Rise Pleated Wide Leg...",
-                  size: "Size 28",
-                  price: 1820,
-                  originalPrice: 2799,
-                  discount: "35% off",
-                ),
-                ProductItem(
-                  imageUrl: "https://images-static.nykaa.com/media/catalog/product/tr:h-800,w-800,cm-pad_resize/c/3/c35b0abICONISPECAIN009_1.jpg", // Replace with actual image URL
-                  brand: "Aldo",
-                  title: "Iconispeca-In009 Women Black Sneake...",
-                  size: "Size UK 3",
-                  price: 0, // Update price
-                  originalPrice: 0, // Update original price
-                  discount: "", // Update discount if needed
-                ),
-              ],
+            child: ListView.builder(
+              itemCount: cartItems.length,
+              itemBuilder: (context, index) {
+                final item = cartItems[index];
+                return ProductItem(
+                  imageUrl: item['image'],
+                  brand: item['name'],
+                  title: "Rating: ${item['rating']}",
+                  size: item['size'] ?? 'Size not selected',
+                  price: int.tryParse(item['price'].replaceAll(RegExp(r'[^0-9]'), '')) ?? 0,
+                  originalPrice: 0,
+                  discount: '',
+                );
+              },
             ),
+
           ),
 
           // Savings Section
@@ -184,7 +179,20 @@ class ProductItem extends StatelessWidget {
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Image.network(imageUrl, width: 80, height: 80, fit: BoxFit.cover),
+          Container(
+            width: 20,
+            height: 20,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(8),
+              image: DecorationImage(
+                image: imageUrl.contains("http")
+                    ? NetworkImage(imageUrl)
+                    : AssetImage(imageUrl) as ImageProvider,
+                fit: BoxFit.cover,
+              ),
+            ),
+          ),
+
           const SizedBox(width: 10),
           Expanded(
             child: Column(

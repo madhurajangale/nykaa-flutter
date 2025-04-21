@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-
+import 'cart.dart'; // <- Make sure this path is correct
+import 'bag.dart';
 class ProductDetailPage extends StatelessWidget {
   final String name;
   final String price;
@@ -105,9 +106,24 @@ class ProductDetailPage extends StatelessWidget {
               // Add to Cart Button
               Center(
                 child: ElevatedButton(
-                  onPressed: () {
-                    // Add to cart functionality (you can implement it here)
-                  },
+                    onPressed: () {
+                      cartItems.add({
+                        'name': name,
+                        'price': price,
+                        'image': image,
+                        'rating': rating,
+                        // You need to manage this state, see below
+                      });
+
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(content: Text('Added to Cart')),
+                      );
+
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => ShoppingBagScreen()),
+                      );
+                    },
                   style: ElevatedButton.styleFrom(
                     padding: EdgeInsets.symmetric(vertical: 15, horizontal: 100),
 
