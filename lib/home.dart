@@ -90,7 +90,7 @@ class NykaaHomePage extends StatelessWidget {
                   ),
                   Padding(
                     padding: EdgeInsets.only(right: 10),
-                    child: CategoryCard(category: "Indianwear", image: "assets/indianwear.png"),
+                    child: CategoryCard(category: "Indianwear", image: "assets/westernwear.png"),
                   ),
                   Padding(
                     padding: EdgeInsets.only(right: 10),
@@ -98,7 +98,7 @@ class NykaaHomePage extends StatelessWidget {
                   ),
                   Padding(
                     padding: EdgeInsets.only(right: 10),
-                    child: CategoryCard(category: "Winterwear", image: "assets/winterwear.png"),
+                    child: CategoryCard(category: "Winterwear", image: "assets/westernwear.png"),
                   ),
                 ],
               ),

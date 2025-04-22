@@ -40,7 +40,7 @@ class CategoriesPage extends StatelessWidget {
             Expanded(
               child: ListView(
                 children: [
-                  _buildCategoryItem(context, 'Indianwear', 'assets/indianwear.png'),
+                  _buildCategoryItem(context, 'Indianwear', 'assets/westernwear.png'),
                   _buildCategoryItem(context, 'Westernwear', 'assets/westernwear.png'),
                   _buildCategoryItem(context, 'Jewellery', 'assets/jewellery.png'),
                   _buildCategoryItem(context, 'Watches', 'assets/watches.png'),

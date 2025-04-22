@@ -197,13 +197,13 @@ class ProductCard extends StatelessWidget {
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
           child: Container(
             padding: EdgeInsets.all(7),
-            height: 440,
+            height: 560,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 ClipRRect(
                   borderRadius: BorderRadius.circular(10),
-                  child: Image.asset(image, height: 310, width: double.infinity, fit: BoxFit.cover),
+                  child: Image.asset(image, height: 400, width: double.infinity, fit: BoxFit.cover),
                 ),
                 SizedBox(height: 10),
                 Text(name, style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold)),
