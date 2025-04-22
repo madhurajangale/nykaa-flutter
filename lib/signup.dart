@@ -37,33 +37,60 @@ class _SignupPageState extends State<SignupPage> {
 
   void _signUp() async {
     setState(() {
-      _isLoading = true;
+      _isLoading = true;  // Show loading indicator
     });
+
     try {
+      // Create user with email and password
+      print("Attempting to create user...");
       UserCredential userCredential = await _auth.createUserWithEmailAndPassword(
         email: _emailController.text.trim(),
         password: _passwordController.text.trim(),
       );
+
+      print("User created successfully with UID: ${userCredential.user!.uid}");
+
+      // Save user data in Firestore
       await _firestore.collection('users').doc(userCredential.user!.uid).set({
         'name': _nameController.text.trim(),
         'email': _emailController.text.trim(),
         'phone': _phoneController.text.trim(),
         'uid': userCredential.user!.uid,
       });
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(builder: (context) => NykaaHomePage()),
-      );
+
+      print("User data saved to Firestore");
+
+      // Add a small delay before navigating to the next screen
+      await Future.delayed(Duration(seconds: 1));
+
+      // Check if user is created successfully and navigate
+      if (userCredential.user != null) {
+        setState(() {
+          _isLoading = false;  // Stop loading indicator
+        });
+
+        print("Navigating to NykaaHomePage...");
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => NykaaHomePage()),
+        );
+      }
     } catch (e) {
+      // Handle error
+      print("Error occurred: $e");
+      setState(() {
+        _isLoading = false;  // Stop loading indicator
+      });
+
+      // Show error message
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
         content: Text(e.toString()),
         backgroundColor: Colors.red,
       ));
     }
-    setState(() {
-      _isLoading = false;
-    });
   }
+
+
 
   @override
   Widget build(BuildContext context) {
