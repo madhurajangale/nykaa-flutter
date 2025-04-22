@@ -1,15 +1,16 @@
 import 'package:flutter/material.dart';
 import 'ProductDetailPage.dart';
-import 'Rent.dart'; // New import for rental page
+
 
 void main() {
   runApp(MyApp());
 }
 
 final List<Map<String, String>> productDetails = [
-  {"name": "Sancia women ethnic palazzo set", "price": "₹2,500", "image": "assets/palazzo.png", "rating": "4.5"},
-  {"name": "Indya peach embroided net Anarkali", "price": "₹5,000", "image": "assets/anarkali.png", "rating": "4.7"},
   {"name": "Dori pink Women wear Salwar Suit", "price": "₹1,200", "image": "assets/salwar.png", "rating": "4.3"},
+  {"name": "Indya peach embroided net Anarkali", "price": "₹5,000", "image": "assets/anarkali.png", "rating": "4.7"},
+
+  {"name": "Sancia women ethnic palazzo set", "price": "₹2,500", "image": "assets/palazzo.png", "rating": "4.5"},
   {"name": "Sareeka Pink net lehenga choli", "price": "₹800", "image": "assets/lehenga.png", "rating": "4.0"},
 ];
 
@@ -18,12 +19,12 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: IndianwearPage(),
+      home: RentalWearsPage(),
     );
   }
 }
 
-class IndianwearPage extends StatelessWidget {
+class RentalWearsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -31,7 +32,7 @@ class IndianwearPage extends StatelessWidget {
         backgroundColor: Colors.white,
         elevation: 0,
         title: Text(
-          "Indianwear",
+          "Indianwear On Rentals",
           style: TextStyle(color: Colors.black, fontSize: 20),
         ),
         leading: IconButton(
@@ -50,32 +51,7 @@ class IndianwearPage extends StatelessWidget {
       body: CustomScrollView(
         slivers: [
           // Rental Wears button above the grid
-          SliverToBoxAdapter(
-            child: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Center(
-                child: ElevatedButton(
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => RentalWearsPage()),
-                    );
-                  },
-                  style: ElevatedButton.styleFrom(
-                    padding: EdgeInsets.symmetric(vertical: 12, horizontal: 24),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(30),
-                    ),
 
-                  ),
-                  child: Text(
-                    'See Rental Wears',
-                    style: TextStyle(fontSize: 16, color: Colors.white),
-                  ),
-                ),
-              ),
-            ),
-          ),
           SliverPadding(
             padding: EdgeInsets.symmetric(horizontal: 5, vertical: 5),
             sliver: SliverGrid(
