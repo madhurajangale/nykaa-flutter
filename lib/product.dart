@@ -10,6 +10,14 @@ final List<Map<String, String>> productDetails = [
   {"name": "Sancia women ethnic palazzo set", "price": "₹2,500", "image": "assets/palazzo.png", "rating": "4.5"},
   {"name": "Indya peach embroided net Anarkali", "price": "₹5,000", "image": "assets/anarkali.png", "rating": "4.7"},
   {"name": "Dori pink Women wear Salwar Suit", "price": "₹1,200", "image": "assets/salwar.png", "rating": "4.3"},
+  {"name": "Sareeka Pink net lehenga choli", "price": "₹3800", "image": "assets/lehenga.png", "rating": "4.0"},
+  {"name": "Sancia women ethnic palazzo set", "price": "₹2,500", "image": "assets/palazzo.png", "rating": "4.5"},
+  {"name": "Indya peach embroided net Anarkali", "price": "₹5,000", "image": "assets/anarkali.png", "rating": "4.7"},
+  {"name": "Dori pink Women wear Salwar Suit", "price": "₹1,200", "image": "assets/salwar.png", "rating": "4.2"},
+  {"name": "Sareeka Pink net lehenga choli", "price": "₹2800", "image": "assets/lehenga.png", "rating": "3.8"},
+  {"name": "Sancia women ethnic palazzo set", "price": "₹2,400", "image": "assets/palazzo.png", "rating": "4.3"},
+  {"name": "Indya peach embroided net Anarkali", "price": "₹3,000", "image": "assets/anarkali.png", "rating": "4.0"},
+  {"name": "Dori pink Women wear Salwar Suit", "price": "₹1,200", "image": "assets/salwar.png", "rating": "4.3"},
   {"name": "Sareeka Pink net lehenga choli", "price": "₹800", "image": "assets/lehenga.png", "rating": "4.0"},
 ];
 
@@ -62,15 +70,15 @@ class IndianwearPage extends StatelessWidget {
                     );
                   },
                   style: ElevatedButton.styleFrom(
-                    padding: EdgeInsets.symmetric(vertical: 12, horizontal: 24),
+                    padding: EdgeInsets.symmetric(vertical: 10, horizontal: 34),
                     shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(30),
+                      borderRadius: BorderRadius.circular(3),
                     ),
 
                   ),
                   child: Text(
                     'See Rental Wears',
-                    style: TextStyle(fontSize: 16, color: Colors.white),
+                    style: TextStyle(fontSize: 12, color: Colors.pink),
                   ),
                 ),
               ),

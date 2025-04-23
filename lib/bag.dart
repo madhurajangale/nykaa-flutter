@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'cart.dart'; // <- Make sure this path is correct
 import 'RentBag.dart';
+import 'bill_screen.dart';
 void main() {
   runApp(const MyApp());
 }
@@ -147,7 +148,12 @@ class _ShoppingBagScreenState extends State<ShoppingBagScreen> {
                     backgroundColor: Colors.black,
                     padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
                   ),
-                  onPressed: () {},
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => BillScreen()),
+                    );
+                  },
                   child: const Text("Proceed to Buy", style: TextStyle(color: Colors.white, fontSize: 16)),
                 ),
               ],
@@ -236,7 +242,13 @@ class ProductItem extends StatelessWidget {
           ),
           IconButton(
             icon: const Icon(Icons.close, color: Colors.grey),
-            onPressed: () {},
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => BillScreen()),
+              );
+            },
+
           ),
         ],
       ),

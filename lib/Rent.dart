@@ -7,11 +7,11 @@ void main() {
 }
 
 final List<Map<String, String>> productDetails = [
-  {"name": "Dori pink Women wear Salwar Suit", "price": "₹1,200", "image": "assets/salwar.png", "rating": "4.3"},
-  {"name": "Indya peach embroided net Anarkali", "price": "₹5,000", "image": "assets/anarkali.png", "rating": "4.7"},
+  {"name": "Dori pink Women wear Salwar Suit", "price": "₹1,000 per day", "image": "assets/salwar.png", "rating": "4.3"},
+  {"name": "Indya peach embroided net Anarkali", "price": "₹9,00 per day", "image": "assets/anarkali.png", "rating": "4.7"},
 
-  {"name": "Sancia women ethnic palazzo set", "price": "₹2,500", "image": "assets/palazzo.png", "rating": "4.5"},
-  {"name": "Sareeka Pink net lehenga choli", "price": "₹800", "image": "assets/lehenga.png", "rating": "4.0"},
+  {"name": "Sancia women ethnic palazzo set", "price": "₹500 per day", "image": "assets/palazzo.png", "rating": "4.5"},
+  {"name": "Sareeka Pink net lehenga choli", "price": "₹1200 per day", "image": "assets/lehenga.png", "rating": "4.0"},
 ];
 
 class MyApp extends StatelessWidget {
