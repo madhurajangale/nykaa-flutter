@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'cart.dart'; // <- Make sure this path is correct
-import 'RentBag.dart';
+
 void main() {
   runApp(const MyApp());
 }
@@ -12,19 +12,19 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: ShoppingBagScreen(),
+      home: RentBagScreen(),
     );
   }
 }
 
-class ShoppingBagScreen extends StatefulWidget {
+class RentBagScreen extends StatefulWidget {
   @override
-  _ShoppingBagScreenState createState() => _ShoppingBagScreenState();
+  _RentBagScreenState createState() => _RentBagScreenState();
 }
 
-class _ShoppingBagScreenState extends State<ShoppingBagScreen> {
+class _RentBagScreenState extends State<RentBagScreen> {
   int getTotalPrice() {
-    return cartItems.fold(0, (sum, item) {
+    return rentalItems.fold(0, (sum, item) {
       final price = int.tryParse(item['price'].replaceAll(RegExp(r'[^0-9]'), '')) ?? 0;
       return sum + price;
     });
@@ -45,20 +45,11 @@ class _ShoppingBagScreenState extends State<ShoppingBagScreen> {
           },
         ),
         title: const Text(
-          "Bag",
+          "Rentals Bag",
           style: TextStyle(color: Colors.black, fontSize: 22, fontWeight: FontWeight.bold),
         ),
         actions: [
-          TextButton(
-            onPressed: () {
-              // Navigate to the RentBagScreen when pressed
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => RentBagScreen()),
-              );
-            },
-            child: const Text("Rentals", style: TextStyle(color: Colors.pinkAccent, fontSize: 14)),
-          ),
+
         ],
       ),
       body: Column(
@@ -96,9 +87,9 @@ class _ShoppingBagScreenState extends State<ShoppingBagScreen> {
           // Product List
           Expanded(
             child: ListView.builder(
-              itemCount: cartItems.length,
+              itemCount: rentalItems.length,
               itemBuilder: (context, index) {
-                final item = cartItems[index];
+                final item = rentalItems[index];
                 return ProductItem(
                   imageUrl: item['image'],
                   brand: item['name'],

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'ProductDetailPage.dart';
-
+import 'rentproddetail.dart';
 
 void main() {
   runApp(MyApp());
@@ -100,7 +100,7 @@ class ProductCard extends StatelessWidget {
         Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) => ProductDetailPage(
+            builder: (context) => RentDetailPage(
               name: name,
               price: price,
               image: image,
