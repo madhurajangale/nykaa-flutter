@@ -37,54 +37,91 @@ class _SignupPageState extends State<SignupPage> {
 
   void _signUp() async {
     setState(() {
-      _isLoading = true;  // Show loading indicator
+      _isLoading = true;
     });
 
     try {
-      // Create user with email and password
-      print("Attempting to create user...");
+      // Step 1: Create user
       UserCredential userCredential = await _auth.createUserWithEmailAndPassword(
         email: _emailController.text.trim(),
         password: _passwordController.text.trim(),
       );
 
-      print("User created successfully with UID: ${userCredential.user!.uid}");
+      User? user = userCredential.user;
 
-      // Save user data in Firestore
-      await _firestore.collection('users').doc(userCredential.user!.uid).set({
-        'name': _nameController.text.trim(),
-        'email': _emailController.text.trim(),
-        'phone': _phoneController.text.trim(),
-        'uid': userCredential.user!.uid,
-      });
-
-      print("User data saved to Firestore");
-
-      // Add a small delay before navigating to the next screen
-      await Future.delayed(Duration(seconds: 1));
-
-      // Check if user is created successfully and navigate
-      if (userCredential.user != null) {
-        setState(() {
-          _isLoading = false;  // Stop loading indicator
-        });
-
-        print("Navigating to NykaaHomePage...");
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(builder: (context) => NykaaHomePage()),
-        );
+      // Step 2: Send verification email
+      if (user != null && !user.emailVerified) {
+        await user.sendEmailVerification();
       }
-    } catch (e) {
-      // Handle error
-      print("Error occurred: $e");
+
+      // Step 3: Notify user to verify
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text("A verification email has been sent. Please verify your email."),
+          backgroundColor: Colors.orange,
+        ),
+      );
+
+      // Step 4: Periodically check for verification
+      bool isVerified = false;
+
+      while (!isVerified) {
+        await Future.delayed(Duration(seconds: 3));
+        await user!.reload(); // Refresh the user's info
+        user = _auth.currentUser; // Get the updated user object
+        isVerified = user!.emailVerified;
+
+        if (isVerified) {
+          // Step 5: Save user to Firestore after verification
+          await FirebaseFirestore.instance.collection('users').doc(user.uid).set({
+            'name': _nameController.text.trim(),
+            'email': _emailController.text.trim(),
+            'phone': _phoneController.text.trim(),
+            'uid': user.uid,
+          });
+
+          // Step 6: Navigate to Home
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(builder: (context) => NykaaHomePage()),
+          );
+          break;
+        }
+      }
+
       setState(() {
-        _isLoading = false;  // Stop loading indicator
+        _isLoading = false;
+      });
+    } catch (e) {
+      setState(() {
+        _isLoading = false;
       });
 
-      // Show error message
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
         content: Text(e.toString()),
+        backgroundColor: Colors.red,
+      ));
+    }
+  }
+
+
+
+
+  void _checkEmailVerification() async {
+    User? user = FirebaseAuth.instance.currentUser;
+    await user?.reload(); // Reload user to fetch updated data
+    user = FirebaseAuth.instance.currentUser;
+
+    if (user != null && user.emailVerified) {
+      // Navigate to the home screen
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => NykaaHomePage()),
+      );
+    } else {
+      // Show a prompt asking user to verify email
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Text('Please verify your email before proceeding.'),
         backgroundColor: Colors.red,
       ));
     }
